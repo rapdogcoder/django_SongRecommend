@@ -38,7 +38,9 @@ SECRET_KEY = get_secret("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.ap-northeast-2.compute.amazonaws.com',
+]
 
 
 # Application definition
@@ -136,7 +138,7 @@ STATICFILES_DIR = [
     BASE_DIR/ 'static',
     os.path.join(BASE_DIR,'recommend_app' ,'static')
 ]
-
+STATIC_ROOT = os.path.join(BASE_DIR/'.static_root')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
