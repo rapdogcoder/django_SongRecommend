@@ -2,6 +2,10 @@ from http.client import HTTPResponse
 
 import sys
 print(sys.executable)
+import os
+from pathlib import Path
+BASE_PATH = Path(__file__).resolve().parent.parent
+
 
 from django.shortcuts import render,HttpResponse,redirect,render
 from django.views.decorators.csrf import csrf_exempt
@@ -17,15 +21,15 @@ import matplotlib.pyplot as plt
 
 num = 0
 keyword = []
-tag_df = pd.read_json('./static/data/texts/final_sesac_df.json')
-light_song = pd.read_json('./static/data/texts/song_meta_light_str.json')
+
+light_song = pd.read_json(BASE_PATH/'.static_root/data/texts/song_meta_light_str.json')
 topics = [{'id':1,'title': '만든 사람','body' : '윤혜영, 장윤식, 조경희, 김빈'},
 {'id':2,'title':'이 앱에 대하여','body':'.. 쏼라 쏼라'},
 {'id':3,'title':'Thanks TO','body':'부모님'},
 {'id':4,'title':'show Data','body':'사용자님이 주신 소중한 데이터들'},
 {'id':5,'title':'게시판','body':'게시글쓰기'}]
-keyword_model = Word2Vec().wv.load('./static/data/keyword_final')
-play_list_model = Word2Vec().wv.load('./static/data/word2vec_playlist')
+keyword_model = Word2Vec().wv.load(str(BASE_PATH/'.static_root/data/keyword_final'))
+play_list_model = Word2Vec().wv.load(str(BASE_PATH/'.static_root/data/word2vec_playlist'))
 
 def index(request):
     article = '''
@@ -125,10 +129,10 @@ def data(request):
     tag_list = [i['tag'][2:-2].replace("'", '').replace(",", '').split() for i in test]
     tag_list = sum(tag_list, [])
     frequency_d = collections.Counter(tag_list)
-    font_path = './static/data/BATANG.TTC'
-    wc = WordCloud(width=1000, font_path=font_path, height=600, background_color="white", random_state=0)
+    font_path = BASE_PATH/'.static_root/data/BATANG.TTC'
+    wc = WordCloud(width=1000, font_path=str(font_path), height=600, background_color="white", random_state=0)
     wc.generate_from_frequencies(frequency_d)
-    wc.to_file('./static/data/image/wordcloud.png')
+    wc.to_file(str(BASE_PATH/'.static_root/data/image/wordcloud.png'))
     return render(request,'recommend_app/data.html',{'topics':topics,'datas':_list[:50]})
 
 @csrf_exempt
